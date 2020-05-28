@@ -30,8 +30,12 @@ class Crud{
             $data .="<td>{$row['id']}</td>";
             $data .="<td>{$row['user']}</td>";
             $data .="<td>{$row['pass']}</td>";
-            $data .= '<td><a class="modelbtn" data-toggle="modal" data-target="#exampleModal" href="user.php?id='.$row['id'].'">Update</a></td>';
-            $data .='<td><a class="modelbtn" data-toggle="modal" data-target="#exampleModal" href="user.php?id='.$row['id'].'">delete</a></td>';
+            $data .= '<td>
+            <a class="modelbtn" data-toggle="modal" data-target="#myModal" href="?id='.$row['id'].'">Update</a>
+            </td>';
+            $data .='<td>
+            <a class="modelbtn" data-toggle="modal" data-target="#exampleModal" href="?id='.$row['id'].'">delete</a>
+            </td>';
             $data .="<tr>";                     
            echo $data;
              }
@@ -41,14 +45,14 @@ class Crud{
 	 }
     
     public function fetch_update($id){
-    	echo $id;
-           $sql = "SELECT * FROM user where id={$id}";
-            $result = $this->con->query($sql);
+
+           echo $this->sql = "SELECT * FROM user where id={$id}";
+            $this->result = $this->con->query($this->sql);
             $row = $this->result->fetch_assoc();
 			$data = '<form>
 					<div class="form-group">
-					<label for="exampleInputEmail1">Email address</label>
-					<input type="text" value="'.$row['name'].'" class="form-control">
+					<label for="exampleInputEmail1">USER</label>
+					<input type="text" value="'.$row['user'].'" class="form-control">
 					</div>
 					<div class="form-group">
 					<label for="exampleInputPassword1">Password</label>
@@ -57,7 +61,6 @@ class Crud{
 					<button type="submit" name="update" class="btn btn-primary">Submit</button>
 					</form>';
                  echo $data;
-
     }
 }
 $stu = new Crud;
