@@ -25,7 +25,7 @@ include "config.php";
     <label for="exampleInputPassword1">Password</label>
     <input type="password" name="pass" class="form-control">
   </div>
-  <button type="submit" name="insert" class="btn btn-primary">Submit</button>
+  <input type="submit" name="insert" class="btn btn-primary">
 </form>
 <?php
 if(isset($_POST['insert'])){
@@ -43,7 +43,7 @@ header("Location: user.php");
 	<table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">s.no</th>
       <th scope="col">First</th>
       <th scope="col">pass</th>
       <th scope="col">EDIT</th>
@@ -51,39 +51,22 @@ header("Location: user.php");
   </thead>
   <tbody>
     <?php
+    //table
     $select = new Crud;
     $select->fetch();
+    //delete
+	if($_GET['id']){
+	$id = $_GET['id'];
+	$deletedata=new Crud;
+	$deletedata->delete($id);
+	}    
+
     ?>
   </tbody>
 </table>
+
 </div>
 
-
-<div class="modal fade" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-			<?php 
-			$id = 1;
-			if(isset($_GET) && $_GET){
-			$update = new Crud;
-			$update->fetch_update($id);
-			 }
-			?>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
