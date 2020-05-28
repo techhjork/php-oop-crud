@@ -6,7 +6,10 @@ class Crud{
 	 protected $pass = "";
 	 protected $db = "cms";
 	 public function __construct(){
-         $this->con = new mysqli( $this->host , $this->user , $this->pass , $this->db );
+        $this->connect();
+	 }
+	 public function connect(){
+	 $this->con = new mysqli( $this->host , $this->user , $this->pass , $this->db );
        if(mysqli_connect_errno()){
        	echo "error" ;//.mysqli_connect_errno();
        }
@@ -31,13 +34,13 @@ class Crud{
             $data .="<td>{$row['user']}</td>";
             $data .="<td>{$row['pass']}</td>";
             $data .= '<td>
-            <a class="modelbtn" data-toggle="modal" data-target="#myModal" href="?id='.$row['id'].'">Update</a>
+            <a class="modelbtn" href="modal.php?id='.$row['id'].'">Update</a>
             </td>';
             $data .='<td>
-            <a class="modelbtn" data-toggle="modal" data-target="#exampleModal" href="?id='.$row['id'].'">delete</a>
+            <a class="modelbtn" href="user.php?id='.$row['id'].'">delete</a>
             </td>';
             $data .="<tr>";                     
-           echo $data;
+            echo $data;
              }
 	 	}else{
 	 		echo " no Data";
@@ -46,22 +49,60 @@ class Crud{
     
     public function fetch_update($id){
 
-           echo $this->sql = "SELECT * FROM user where id={$id}";
+            $this->sql = "SELECT * FROM user where id={$id}";
             $this->result = $this->con->query($this->sql);
             $row = $this->result->fetch_assoc();
-			$data = '<form>
+			$data = '<form action="" method="">
 					<div class="form-group">
 					<label for="exampleInputEmail1">USER</label>
-					<input type="text" value="'.$row['user'].'" class="form-control">
+					<input type="text" value="'.$row['user'].'" name="user" class="form-control">
 					</div>
 					<div class="form-group">
 					<label for="exampleInputPassword1">Password</label>
-					<input type="password" value="'.$row['pass'].'" class="form-control">
+					<input type="password" value="'.$row['pass'].'" name="pass" class="form-control">
 					</div>
-					<button type="submit" name="update" class="btn btn-primary">Submit</button>
+					<input type="hidden" value="'.$row['id'].'" name="id">
+					<input type="submit" name="update" class="btn btn-primary">
 					</form>';
-                 echo $data;
+					if($data){
+					echo $data;
+					return $data;
+					}else{
+						return false;
+					}
+    
     }
+
+    public function update($id,$user,$pass){
+       echo $this->sql = "UPDATE user SET user='$user', pass ='$pass' WHERE id= $id";
+       $this->result = $this->con->query($this->sql) or die($this->con->error);
+     /*  if($this->result){
+       	echo "result running";
+       }else{
+       	echo "\n Not working".$this->result;
+       };*/
+    
+    if ($this->con->query($this->sql) === TRUE) {
+  echo "Record updated successfully";
+} else {
+  echo "Error updating record: " . $this->con->error;
+}
+
+    }
+
+
+
+
+  public function delete($id){
+
+   echo $this->sql = "DELETE FROM user where id=$id";
+   $this->result = $this->con->query($this->sql) or die($this->query($this->sql));
+   if($this->result){
+       	echo "result running".$this->result;
+       }else{
+       	echo "<br>Not working";
+       };
+  }    
 }
 $stu = new Crud;
 //$stu->connect();
